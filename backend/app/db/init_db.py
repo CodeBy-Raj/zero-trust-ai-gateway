@@ -33,6 +33,23 @@ def init_db():
                     rule_triggered TEXT
                 )
             """)
+
+            cur.execute("""
+                CREATE TABLE IF NOT EXISTS role_permissions (
+                    role_name VARCHAR(50) PRIMARY KEY,
+                    allowed_tools JSONB
+                )
+            """)
+
+            cur.execute("SELECT COUNT(*) FROM role_permissions")
+            if cur.fetchone()["count"] == 0:
+                cur.execute("""
+                    INSERT INTO role_permissions (role_name, allowed_tools) VALUES
+                    ('viewer', '[]'),
+                    ('editor', '["send_webhook"]'),
+                    ('admin', '["delete_user", "send_webhook"]')
+                """)
+
         conn.commit()
     finally:
         conn.close()
