@@ -30,10 +30,10 @@ TOOLS_SCHEMA = [
                     },
                     "payload": {
                         "type": "string",
-                        "description": "The data to send."
+                        "description": "The data or payload to send to the webhook."
                     }
                 },
-                "required": ["url", "payload"]
+                "required": ["url"]
             }
         }
     }
