@@ -30,6 +30,56 @@ The system enforces a strict least-privilege boundary:
 
 ---
 
+## 🏗️ Architecture: The Zero-Trust Tool-Call Rail
+
+To neutralize the "Excessive Agency" vulnerability, this architecture physically separates the AI's cognitive reasoning from the infrastructure execution layer. The LLM is treated as an untrusted reasoning engine that can only *propose* actions.
+
+```text
+                 [ FRONTEND ]
+        ┌─────────────────────────┐
+        │       React SOC UI      │
+        │                         │
+        │ - Threat Console        │
+        │ - Live Neon DB State    │
+        │ - Audit Trail           │
+        └────────────┬────────────┘
+                     │ (Unseen Prompt)
+                     ▼
+                [ BACKEND ]
+        ┌─────────────────────────┐
+        │      AGENT SERVICE      │
+        │   (Groq / Llama-3.1)    │
+        │                         │
+        │ Generates JSON Proposal:│
+        │ { "tool": "delete_*",   │
+        │   "args": {...} }       │
+        └─────────┬───────────────┘
+                  │
+                  │ Tool Proposal (No Execution Authority)
+                  ▼
+        ╔═════════════════════════╗
+        ║    SECURITY GATEWAY     ║
+        ║  (Deterministic Engine) ║
+        ║                         ║
+        ║ 1. RBAC Validator       ║
+        ║ 2. Parameter Policy     ║
+        ║ 3. Egress Validator     ║
+        ║ 4. DLP Secret Scanner   ║
+        ╚═════════╤═══════════════╝
+                  │
+          ┌───────┴───────┐
+       BLOCK            ALLOW
+          │               │
+          ▼               ▼
+   [Audit Service]  [Tool Executor]
+          │               │
+          │               ▼
+          │         (Real Tool)
+          │               │
+          └───────► [ NEON DB ]
+
+```
+
 ## ⚔️ Demonstrated Attacks & Defenses
 
 This system successfully defends against three concrete threat vectors[cite: 5]:
