@@ -1,3 +1,19 @@
-zero-trust-ai-gateway/backend/.env
+# Environment files
 .env
-zero-trust-ai-gateway/backend/app/__pycache__
+backend/.env
+*.env
+
+# Python cache & bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Node / Frontend
+node_modules/
+dist/
+build/
+
+# IDE / System
+.vscode/
+.idea/
+.DS_Store
