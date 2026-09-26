@@ -23,6 +23,9 @@ export default function App() {
 
   useEffect(() => {
     refreshState();
+    // Auto-poll state every 2 seconds for live telemetry stream
+    const interval = setInterval(refreshState, 2000);
+    return () => clearInterval(interval);
   }, []);
 
   const handleResult = (res) => {
@@ -81,7 +84,7 @@ export default function App() {
         <section>
           <ThreatConsole role={role} onResult={handleResult} />
           <SecurityDecision result={result} />
-          <EvaluationMatrix />
+          <EvaluationMatrix logs={dashboardState.logs} />
         </section>
 
         <section style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
