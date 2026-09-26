@@ -10,7 +10,7 @@ class AgentService:
     def process(self, prompt: str):
         try:
             response = self.client.chat.completions.create(
-                model="llama-3.1-8b-instant",
+                model="qwen/qwen3.8-27b",
                 messages=[
                     {"role": "system", "content": "You are a helpful database assistant. Use the provided tools if the user asks you to perform an action."},
                     {"role": "user", "content": prompt}
