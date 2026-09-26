@@ -1,1 +1,3 @@
 zero-trust-ai-gateway/backend/.env
+.env
+zero-trust-ai-gateway/backend/app/__pycache__
